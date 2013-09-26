@@ -144,6 +144,13 @@ def filter_ascii(lst):
     '''
     return [word for word in lst if all(ord(c) < 128 for c in word)]
 
+def get_finnish():
+    lst = []
+    for line in codecs.open('../data/fi_30k.txt', 'r', 'utf8'):
+        if line.strip():
+            lst.append(line.strip().split()[0])
+    return lst
+
 def to_js(lst, lst_name):
     return 'var %s = %s;\n\n' % (lst_name, simplejson.dumps(lst))
 
@@ -151,24 +158,27 @@ def main():
     english = get_ranked_english()
     surnames, male_names, female_names = get_ranked_census_names()
     passwords = get_ranked_common_passwords()
+    finnish = get_finnish()
 
     [english,
      surnames, male_names, female_names,
      passwords] = [filter_ascii(filter_short(lst)) for lst in (english,
                                                                surnames, male_names, female_names,
                                                                passwords)]
+    finnish = filter_short(finnish)
 
     # make dictionaries disjoint so that d1 & d2 == set() for any two dictionaries
-    all_dicts = set(tuple(l) for l in [english, surnames, male_names, female_names, passwords])
+    all_dicts = set(tuple(l) for l in [english, surnames, male_names, female_names, passwords, finnish])
     passwords    = filter_dup(passwords,    all_dicts - set([tuple(passwords)]))
     male_names   = filter_dup(male_names,   all_dicts - set([tuple(male_names)]))
     female_names = filter_dup(female_names, all_dicts - set([tuple(female_names)]))
     surnames     = filter_dup(surnames,     all_dicts - set([tuple(surnames)]))
     english      = filter_dup(english,      all_dicts - set([tuple(english)]))
+    finnish      = filter_dup(finnish,      all_dicts - set([tuple(finnish)]))
 
     with open('../frequency_lists.js', 'w') as f: # words are all ascii at this point
         lsts = locals()
-        for lst_name in 'passwords male_names female_names surnames english'.split():
+        for lst_name in 'passwords male_names female_names surnames english finnish'.split():
             lst = lsts[lst_name]
             f.write(to_js(lst, lst_name))
 
@@ -178,6 +188,7 @@ def main():
     print 'female.......', len(female_names)
     print 'surnames.....', len(surnames)
     print 'english......', len(english)
+    print 'finnish......', len(finnish)
     print
 
 if __name__ == '__main__':
