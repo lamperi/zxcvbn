@@ -1,3 +1,4 @@
+# coding: utf-8
 import simplejson
 
 qwerty = r'''
@@ -12,6 +13,21 @@ dvorak = r'''
     '" ,< .> pP yY fF gG cC rR lL /? =+ \|
      aA oO eE uU iI dD hH tT nN sS -_
       ;: qQ jJ kK xX bB mM wW vV zZ
+'''
+
+qwerty_fi = u'''
+§½ 1! 2" 3# 4¤ 5% 6& 7/ 8( 9) 0= +? ´`
+    qQ wW eE rR tT yY uU iI oO pP åÅ ¨^
+     aA sS dD fF gG hH jJ kK lL öÖ äÄ '*
+   <> zZ xX cC vV bB nN mM ,; .: -_
+
+'''
+
+mac_qwerty_fi = u'''
+§° 1! 2" 3# 4€ 5% 6& 7/ 8( 9) 0= +? ´`
+    qQ wW eE rR tT yY uU iI oO pP åÅ ¨^
+     aA sS dD fF gG hH jJ kK lL öÖ äÄ '*
+   <> zZ xX cC vV bB nN mM ,; .: -_
 '''
 
 keypad = r'''
@@ -79,6 +95,8 @@ if __name__ == '__main__':
     with open('adjacency_graphs.js', 'w') as f:
         for graph_name, args in [('qwerty', (qwerty, True)),
                                  ('dvorak', (dvorak, True)),
+                                 ('qwerty_fi', (qwerty_fi, True)),
+                                 ('mac_qwerty_fi', (mac_qwerty_fi, True)),
                                  ('keypad', (keypad, False)),
                                  ('mac_keypad', (mac_keypad, False))]:
             graph = build_graph(*args)

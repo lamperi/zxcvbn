@@ -21,6 +21,8 @@ MATCHERS = DICTIONARY_MATCHERS.concat [
 GRAPHS =
   'qwerty': qwerty
   'dvorak': dvorak
+  'qwerty_fi': qwerty_fi
+  'mac_qwerty_fi': mac_qwerty_fi
   'keypad': keypad
   'mac_keypad': mac_keypad
 
